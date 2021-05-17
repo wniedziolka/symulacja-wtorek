@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Program do symulacji rozprzestrzeniania choroby w populacji
-
 Kod do wykorzystania na zajęciach 01.04.2020
 """
 
@@ -61,8 +60,8 @@ class Populacja:
             szerokosc (float, optional): szerokosć planszy            
         """
         self._pacjenci = []
-        self.wysokosc = wysokosc
-        self.szerokosc = szerokosc
+        self.__wysokosc = wysokosc
+        self.__szerokosc = szerokosc
         
         for i in range(n):
             x = random.uniform(0, szerokosc)
@@ -70,6 +69,29 @@ class Populacja:
             zdrowy = random.choices( [True, False], [80, 20] )[0]
             self._pacjenci.append( Pacjent(x, y, zdrowy) )
     
+    def set_szerokosc(self, value):
+        if self.szerokosc > value:
+            for pacjent in self._pacjenci:
+                if pacjent.x > value:
+                    pacjent.x = random.uniform(0, value)
+        self.__szerokosc = value
+    
+    def set_wysokosc(self, value):
+        if self.wysokosc > value:
+            for pacjent in self._pacjenci:
+                if pacjent.y > value:
+                    pacjent.y = random.uniform(0, value)
+        self.__wysokosc = value
+    
+    def get_szerokosc(self):
+        return self.__szerokosc
+    
+    def get_wysokosc(self):
+        return self.__wysokosc
+    
+    wysokosc = property(get_wysokosc, set_wysokosc)
+    szerokosc = property(get_szerokosc, set_szerokosc)
+
     def __str__(self):
         s = ""
         for p in self._pacjenci:
